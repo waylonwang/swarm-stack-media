@@ -1,0 +1,82 @@
+version: "3.4"
+
+services:
+  drpy:
+    image: esme518/docker-drpy
+    networks:
+      - network_cluster       
+    restart: always
+    environment:
+      INET_USERNAME: user
+      INET_PASSWORD: 123456
+      TZ: ${TZ}
+    volumes:
+      - homenas_drpy:/root/sd/pywork/dr_py
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.drpy1.rule=Host(`drpy.cloudvalley.name`)"
+        - "traefik.http.routers.drpy1.entrypoints=websecure"
+        - "traefik.http.routers.drpy1.service=drpy1"
+        - "traefik.http.routers.drpy1.middlewares=noauth-chain@file"
+        - "traefik.http.services.drpy1.loadbalancer.server.port=9001"  
+        - "traefik.http.routers.drpy2.rule=Host(`drpy.cloudvalley.name`)"
+        - "traefik.http.routers.drpy2.entrypoints=websecure"
+        - "traefik.http.routers.drpy2.service=drpy2"
+        - "traefik.http.routers.drpy2.middlewares=noauth-chain@file"
+        - "traefik.http.services.drpy2.loadbalancer.server.port=5705"      
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.media == true 
+
+  myalist:
+    image: xhofe/alist:latest
+    networks:
+      - network_cluster
+    restart: always
+
+    environment:
+      PUID: 0
+      PGID: 0
+      UMASK: 022
+      TZ: ${TZ}
+    volumes:
+      - homenas_mylist:/opt/alist/data
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.myalist.rule=Host(`myalist.cloudvalley.name`)"
+        - "traefik.http.routers.myalist.entrypoints=websecure"
+        - "traefik.http.routers.myalist.middlewares=noauth-chain@file"
+        - "traefik.http.services.myalist.loadbalancer.server.port=5244"    
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.media == true 
+          
+networks:
+  network_cluster:
+    external: true
+
+configs:
+  myalist_token:
+     external: true
+     
+x-common-keys-volume: &common-keys-volume
+  type: nfs
+  o: addr=192.168.11.99,rw,nfsvers=4
+  
+volumes:
+  homenas_drpy: 
+    driver: local
+    driver_opts:
+      <<: *common-keys-volume
+      device: :/volume1/docker/swarm/media/drpy/src
+  homenas_mylist: 
+    driver: local
+    driver_opts:
+      <<: *common-keys-volume
+      device: :/volume1/docker/swarm/media/myalist/data
