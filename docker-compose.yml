@@ -9,7 +9,8 @@ services:
     environment:
       INET_USERNAME: user
       INET_PASSWORD: 123456
-      TZ: ${TZ}
+    env_file:     
+      - ../../stack.env
     volumes:
       - homenas_drpy:/root/sd/pywork/dr_py
     deploy:
@@ -41,7 +42,8 @@ services:
       PUID: 0
       PGID: 0
       UMASK: 022
-      TZ: ${TZ}
+    env_file:     
+      - ../../stack.env
     volumes:
       - homenas_mylist:/opt/alist/data
     deploy:
