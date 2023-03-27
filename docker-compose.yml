@@ -61,6 +61,7 @@ services:
           - node.labels.type == vm 
           - node.labels.media == true
 
+  # jellyfin
   jellyfin:
     image: jellyfin/jellyfin
     networks:
