@@ -30,6 +30,7 @@ services:
       replicas: 1
       placement:
         constraints:
+          - node.labels.type == vm 
           - node.labels.media == true 
 
   myalist:
@@ -37,7 +38,6 @@ services:
     networks:
       - network_cluster
     restart: always
-
     environment:
       PUID: 0
       PGID: 0
@@ -57,7 +57,43 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.labels.media == true 
+          - node.labels.type == vm 
+          - node.labels.media == true
+
+  jellyfin:
+    image: jellyfin/jellyfin
+    networks:
+      - network_cluster
+    volumes:
+      - homenas_jellyfin_config:/config
+      - homenas_jellyfin_cache:/cache
+      - homenas_jellyfin_font:/usr/share/fonts/truetype/dejavu
+      - /volume4/video:/media
+      - /volume2/video.other:/other
+    ports:
+      - "44096:8096"
+      # - "44920:8920"
+    devices:
+      - "/dev/dri/renderD128:/dev/dri/renderD128"
+    restart: always
+    extra_hosts:
+      - "api.themoviedb.org:13.225.170.110"
+      - "api.thetvdb.com:13.35.45.141"
+      - "image.tmdb.org:99.84.238.101"
+      - "www.themoviedb.org:99.84.203.104"          
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.cloudvalley.name`)"
+        - "traefik.http.routers.jellyfin.entrypoints=websecure"
+        - "traefik.http.routers.jellyfin.middlewares=noauth-chain@file"
+        - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"    
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.type == nas
+          - node.labels.nas == primary
           
 networks:
   network_cluster:
@@ -82,3 +118,18 @@ volumes:
     driver_opts:
       <<: *common-keys-volume
       device: :/volume1/docker/swarm/media/myalist/data
+  homenas_jellyfin_config: 
+    driver: local
+    driver_opts:
+      <<: *common-keys-volume
+      device: :/volume1/docker/swarm/media/jellyfin/config
+  homenas_jellyfin_cache: 
+    driver: local
+    driver_opts:
+      <<: *common-keys-volume
+      device: :/volume1/docker/swarm/media/jellyfin/cache
+  homenas_jellyfin_font: 
+    driver: local
+    driver_opts:
+      <<: *common-keys-volume
+      device: :/volume1/docker/swarm/media/jellyfin/font        
