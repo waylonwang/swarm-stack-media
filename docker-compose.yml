@@ -9,8 +9,8 @@ services:
     environment:
       INET_USERNAME: user
       INET_PASSWORD: 123456
-    env_file:     
-      - ../../stack.env
+    #env_file:     
+      #- ../../stack.env
     volumes:
       - homenas_drpy:/root/sd/pywork/dr_py
     deploy:
