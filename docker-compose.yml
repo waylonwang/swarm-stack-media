@@ -96,7 +96,7 @@ services:
         constraints:
           - node.labels.type == nas
           - node.labels.nas == primary
-          
+
 networks:
   network_cluster:
     external: true
