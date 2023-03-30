@@ -20,7 +20,7 @@ services:
         - "traefik.http.routers.drpy1.service=drpy1"
         - "traefik.http.routers.drpy1.middlewares=noauth-chain@file"
         - "traefik.http.services.drpy1.loadbalancer.server.port=9001"  
-        - "traefik.http.routers.drpy2.rule=Host(`drpy.cloudvalley.name`)"
+        - "traefik.http.routers.drpy2.rule=Host(`drpy.${DOMAIN_SWARM}`)"
         - "traefik.http.routers.drpy2.entrypoints=websecure"
         - "traefik.http.routers.drpy2.service=drpy2"
         - "traefik.http.routers.drpy2.middlewares=noauth-chain@file"
