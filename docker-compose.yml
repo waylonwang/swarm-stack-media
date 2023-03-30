@@ -66,8 +66,8 @@ services:
       - nfs_jellyfin_config:/config
       - nfs_jellyfin_cache:/cache
       - nfs_jellyfin_font:/usr/share/fonts/truetype/dejavu
-      - /volume4/video:/media
-      - /volume2/video.other:/other
+      - ${VIDEO_MAIN_DIR}:/media
+      - ${VIDEO_OTHER_DIR}:/other
     ports:
       - "44096:8096"
       # - "44920:8920"
