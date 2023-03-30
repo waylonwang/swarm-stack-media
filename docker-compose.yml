@@ -130,4 +130,4 @@ volumes:
     driver: local
     driver_opts:
       <<: *common-keys-volume
-      device: :${NFS_DEVICE}/media/jellyfin/font        
+      device: :${NFS_DEVICE}/media/jellyfin/font
