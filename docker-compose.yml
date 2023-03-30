@@ -7,17 +7,15 @@ services:
       - network_cluster       
     restart: always
     environment:
-      INET_USERNAME: user
-      INET_PASSWORD: 123456
+      INET_USERNAME: ${DRPY_USERNAME}
+      INET_PASSWORD: ${DRPY_PASSWORD}
       user: root
-    #env_file:     
-      #- ../../stack.env
     volumes:
       - homenas_drpy:/root/sd/pywork/dr_py
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.drpy1.rule=Host(`drpy.cloudvalley.name`)"
+        - "traefik.http.routers.drpy1.rule=Host(`drpy.${DOMAIN_SWARM}`)"
         - "traefik.http.routers.drpy1.entrypoints=websecure"
         - "traefik.http.routers.drpy1.service=drpy1"
         - "traefik.http.routers.drpy1.middlewares=noauth-chain@file"
@@ -40,17 +38,15 @@ services:
       - network_cluster
     restart: always
     environment:
-      PUID: 0
-      PGID: 0
-      UMASK: 022
-    env_file:     
-      - ../../stack.env
+      PUID: ${MYALIST_PUID}
+      PGID: ${MYALIST_PGID}
+      UMASK: ${MYALIST_UMASK}
     volumes:
       - homenas_mylist:/opt/alist/data
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.myalist.rule=Host(`myalist.cloudvalley.name`)"
+        - "traefik.http.routers.myalist.rule=Host(`myalist.${DOMAIN_SWARM}`)"
         - "traefik.http.routers.myalist.entrypoints=websecure"
         - "traefik.http.routers.myalist.middlewares=noauth-chain@file"
         - "traefik.http.services.myalist.loadbalancer.server.port=5244"    
@@ -86,7 +82,7 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.cloudvalley.name`)"
+        - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.${DOMAIN_SWARM}`)"
         - "traefik.http.routers.jellyfin.entrypoints=websecure"
         - "traefik.http.routers.jellyfin.middlewares=noauth-chain@file"
         - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"    
