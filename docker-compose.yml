@@ -11,7 +11,7 @@ services:
       INET_PASSWORD: ${DRPY_PASSWORD}
       user: root
     volumes:
-      - homenas_drpy:/root/sd/pywork/dr_py
+      - nfs_drpy:/root/sd/pywork/dr_py
     deploy:
       labels:
         - "traefik.enable=true"
@@ -42,7 +42,7 @@ services:
       PGID: ${MYALIST_PGID}
       UMASK: ${MYALIST_UMASK}
     volumes:
-      - homenas_mylist:/opt/alist/data
+      - nfs_mylist:/opt/alist/data
     deploy:
       labels:
         - "traefik.enable=true"
@@ -63,9 +63,9 @@ services:
     networks:
       - network_cluster
     volumes:
-      - homenas_jellyfin_config:/config
-      - homenas_jellyfin_cache:/cache
-      - homenas_jellyfin_font:/usr/share/fonts/truetype/dejavu
+      - nfs_jellyfin_config:/config
+      - nfs_jellyfin_cache:/cache
+      - nfs_jellyfin_font:/usr/share/fonts/truetype/dejavu
       - /volume4/video:/media
       - /volume2/video.other:/other
     ports:
@@ -103,31 +103,31 @@ configs:
      
 x-common-keys-volume: &common-keys-volume
   type: nfs
-  o: addr=192.168.11.99,rw,nfsvers=4
+  o: addr=${NFS_SERVER},rw,nfsvers=4
   
 volumes:
-  homenas_drpy: 
+  nfs_drpy: 
     driver: local
     driver_opts:
       <<: *common-keys-volume
-      device: :/volume1/docker/swarm/media/drpy/src
-  homenas_mylist: 
+      device: :${NFS_DEVICE}/media/drpy/src
+  nfs_mylist: 
     driver: local
     driver_opts:
       <<: *common-keys-volume
-      device: :/volume1/docker/swarm/media/myalist/data
-  homenas_jellyfin_config: 
+      device: :${NFS_DEVICE}/media/myalist/data
+  nfs_jellyfin_config: 
     driver: local
     driver_opts:
       <<: *common-keys-volume
-      device: :/volume1/docker/swarm/media/jellyfin/config
-  homenas_jellyfin_cache: 
+      device: :${NFS_DEVICE}/media/jellyfin/config
+  nfs_jellyfin_cache: 
     driver: local
     driver_opts:
       <<: *common-keys-volume
-      device: :/volume1/docker/swarm/media/jellyfin/cache
-  homenas_jellyfin_font: 
+      device: :${NFS_DEVICE}/media/jellyfin/cache
+  nfs_jellyfin_font: 
     driver: local
     driver_opts:
       <<: *common-keys-volume
-      device: :/volume1/docker/swarm/media/jellyfin/font        
+      device: :${NFS_DEVICE}/media/jellyfin/font        
