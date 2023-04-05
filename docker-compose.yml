@@ -1,15 +1,16 @@
 version: "3.4"
 
 services:
+  # Drpy
   drpy:
     image: esme518/docker-drpy
-    networks:
-      - network_cluster
-    restart: always
+    networks: [network_cluster]
+    restart: on-failure
     environment:
+      user: root
       INET_USERNAME: ${DRPY_USERNAME}
       INET_PASSWORD: ${DRPY_PASSWORD}
-      user: root
+      TZ: ${TZ}       
     volumes:
       - nfs_drpy:/root/sd/pywork/dr_py
     deploy:
@@ -32,15 +33,16 @@ services:
           - node.labels.type == vm
           - node.labels.media == true
 
+  # MyAlist
   myalist:
     image: xhofe/alist:latest
-    networks:
-      - network_cluster
-    restart: always
+    networks: [network_cluster]
+    restart: on-failure
     environment:
       PUID: ${MYALIST_PUID}
       PGID: ${MYALIST_PGID}
       UMASK: ${MYALIST_UMASK}
+      TZ: ${TZ}       
     volumes:
       - nfs_mylist:/opt/alist/data
     deploy:
@@ -57,28 +59,26 @@ services:
           - node.labels.type == vm
           - node.labels.media == true
 
-  # jellyfin
+  # Jellyfin
   jellyfin:
     image: jellyfin/jellyfin
-    networks:
-      - network_cluster
+    devices:
+      - "/dev/dri/renderD128:/dev/dri/renderD128"
+    extra_hosts:
+      - "api.themoviedb.org:13.225.170.110"
+      - "api.thetvdb.com:13.35.45.141"
+      - "image.tmdb.org:99.84.238.101"
+      - "www.themoviedb.org:99.84.203.104"
+    networks: [network_cluster]
+    restart: on-failure    
+    ports:
+      - "44096:8096"
     volumes:
       - nfs_jellyfin_config:/config
       - nfs_jellyfin_cache:/cache
       - nfs_jellyfin_font:/usr/share/fonts/truetype/dejavu
       - ${VIDEO_MAIN_DIR}:/media
       - ${VIDEO_OTHER_DIR}:/other
-    ports:
-      - "44096:8096"
-      # - "44920:8920"
-    devices:
-      - "/dev/dri/renderD128:/dev/dri/renderD128"
-    restart: always
-    extra_hosts:
-      - "api.themoviedb.org:13.225.170.110"
-      - "api.thetvdb.com:13.35.45.141"
-      - "image.tmdb.org:99.84.238.101"
-      - "www.themoviedb.org:99.84.203.104"
     deploy:
       labels:
         - "traefik.enable=true"
@@ -95,10 +95,6 @@ services:
 
 networks:
   network_cluster:
-    external: true
-
-configs:
-  myalist_token:
     external: true
 
 x-common-keys-volume: &common-keys-volume
