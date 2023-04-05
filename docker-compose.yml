@@ -4,7 +4,7 @@ services:
   drpy:
     image: esme518/docker-drpy
     networks:
-      - network_cluster       
+      - network_cluster
     restart: always
     environment:
       INET_USERNAME: ${DRPY_USERNAME}
@@ -19,18 +19,18 @@ services:
         - "traefik.http.routers.drpy1.entrypoints=websecure"
         - "traefik.http.routers.drpy1.service=drpy1"
         - "traefik.http.routers.drpy1.middlewares=noauth-chain@file"
-        - "traefik.http.services.drpy1.loadbalancer.server.port=9001"  
+        - "traefik.http.services.drpy1.loadbalancer.server.port=9001"
         - "traefik.http.routers.drpy2.rule=Host(`drpy.${DOMAIN_SWARM}`)"
         - "traefik.http.routers.drpy2.entrypoints=websecure"
         - "traefik.http.routers.drpy2.service=drpy2"
         - "traefik.http.routers.drpy2.middlewares=noauth-chain@file"
-        - "traefik.http.services.drpy2.loadbalancer.server.port=5705"      
+        - "traefik.http.services.drpy2.loadbalancer.server.port=5705"
       mode: replicated
       replicas: 1
       placement:
         constraints:
-          - node.labels.type == vm 
-          - node.labels.media == true 
+          - node.labels.type == vm
+          - node.labels.media == true
 
   myalist:
     image: xhofe/alist:latest
@@ -49,12 +49,12 @@ services:
         - "traefik.http.routers.myalist.rule=Host(`myalist.${DOMAIN_SWARM}`)"
         - "traefik.http.routers.myalist.entrypoints=websecure"
         - "traefik.http.routers.myalist.middlewares=noauth-chain@file"
-        - "traefik.http.services.myalist.loadbalancer.server.port=5244"    
+        - "traefik.http.services.myalist.loadbalancer.server.port=5244"
       mode: replicated
       replicas: 1
       placement:
         constraints:
-          - node.labels.type == vm 
+          - node.labels.type == vm
           - node.labels.media == true
 
   # jellyfin
@@ -78,14 +78,14 @@ services:
       - "api.themoviedb.org:13.225.170.110"
       - "api.thetvdb.com:13.35.45.141"
       - "image.tmdb.org:99.84.238.101"
-      - "www.themoviedb.org:99.84.203.104"          
+      - "www.themoviedb.org:99.84.203.104"
     deploy:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.${DOMAIN_SWARM}`)"
         - "traefik.http.routers.jellyfin.entrypoints=websecure"
         - "traefik.http.routers.jellyfin.middlewares=noauth-chain@file"
-        - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"    
+        - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
       mode: replicated
       replicas: 1
       placement:
@@ -99,34 +99,34 @@ networks:
 
 configs:
   myalist_token:
-     external: true
-     
+    external: true
+
 x-common-keys-volume: &common-keys-volume
   type: nfs
   o: addr=${NFS_SERVER},rw,nfsvers=4
-  
+
 volumes:
-  nfs_drpy: 
+  nfs_drpy:
     driver: local
     driver_opts:
       <<: *common-keys-volume
       device: :${NFS_DEVICE}/media/drpy/src
-  nfs_mylist: 
+  nfs_mylist:
     driver: local
     driver_opts:
       <<: *common-keys-volume
       device: :${NFS_DEVICE}/media/myalist/data
-  nfs_jellyfin_config: 
+  nfs_jellyfin_config:
     driver: local
     driver_opts:
       <<: *common-keys-volume
       device: :${NFS_DEVICE}/media/jellyfin/config
-  nfs_jellyfin_cache: 
+  nfs_jellyfin_cache:
     driver: local
     driver_opts:
       <<: *common-keys-volume
       device: :${NFS_DEVICE}/media/jellyfin/cache
-  nfs_jellyfin_font: 
+  nfs_jellyfin_font:
     driver: local
     driver_opts:
       <<: *common-keys-volume
