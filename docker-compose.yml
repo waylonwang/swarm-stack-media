@@ -8,8 +8,8 @@ services:
     restart: on-failure
     environment:
       user: root
-      INET_USERNAME: ${DRPY_USERNAME}
-      INET_PASSWORD: ${DRPY_PASSWORD}
+      # INET_USERNAME: ${DRPY_USERNAME}
+      # INET_PASSWORD: ${DRPY_PASSWORD}
       TZ: ${TZ}       
     volumes:
       - nfs_drpy:/root/sd/pywork/dr_py
