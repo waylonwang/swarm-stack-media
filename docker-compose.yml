@@ -133,4 +133,4 @@ volumes:
     driver_opts:
       type: nfs
       o: addr=192.168.11.82,rw,nfsvers=4
-      device: :/multimedia/links
+      device: :/multimedia
