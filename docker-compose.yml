@@ -59,6 +59,39 @@ services:
           - node.labels.type == vm
           - node.labels.media == true
 
+  # NAS-Tools
+  nastool:
+    image: shmilyin/nas-tools:2.9.1
+    networks: [network_cluster]
+    restart: on-failure  
+    environment:
+      # 直接使用Portainer容器内的环境变量
+      PUID: ${NASTOOL_PUID}
+      PGID: ${NASTOOL_PGID}
+      UMASK: ${NASTOOL_UMASK}
+      NASTOOL_AUTO_UPDATE: ${NASTOOL_AUTO_UPDATE}
+      NASTOOL_CN_UPDATE: ${NASTOOL_CN_UPDATE}
+      TZ: ${TZ}
+    volumes:
+      - /${MEDIA_DEVICE}:/media
+      - nfs_nastool_config:/config
+    ports:
+      - 3000:3000
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.nastool.rule=Host(`nastool.${DOMAIN_SWARM}`)"
+        - "traefik.http.routers.nastool.entrypoints=websecure"
+        - "traefik.http.routers.nastool.service=nastool"
+        - "traefik.http.routers.nastool.middlewares=noauth-chain@file"
+        - "traefik.http.services.nastool.loadbalancer.server.port=3000"          
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.type == vm
+          - node.labels.media == true
+
   # Jellyfin
   jellyfin:
     image: jellyfin/jellyfin
@@ -101,6 +134,9 @@ networks:
 x-common-keys-volume: &common-keys-volume
   type: nfs
   o: addr=${NFS_SERVER},rw,nfsvers=4
+x-common-media-volume: &common-media-volume
+  type: nfs
+  o: addr=${MEDIA_SERVER},rw,nfsvers=4
 
 volumes:
   nfs_drpy:
@@ -131,6 +167,10 @@ volumes:
   nfs_jellyfin_lib:
     driver: local
     driver_opts:
-      type: nfs
-      o: addr=192.168.11.82,rw,nfsvers=4
-      device: :/multimedia
+      <<: *common-media-volume
+      device: :${MEDIA_DEVICE}/links
+  nfs_nastool_config:
+    driver: local
+    driver_opts:
+      <<: *common-keys-volume
+      device: :${NFS_DEVICE}/media/nastool/config
