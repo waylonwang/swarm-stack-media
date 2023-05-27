@@ -77,7 +77,7 @@ services:
       - nfs_jellyfin_config:/config
       - nfs_jellyfin_cache:/cache
       - nfs_jellyfin_font:/usr/share/fonts/truetype/dejavu
-      # - /volume4/media:/lib
+      - nfs_jellyfin_lib:/medialib
       - ${VIDEO_MAIN_DIR}:/media
       - ${VIDEO_OTHER_DIR}:/other
     deploy:
