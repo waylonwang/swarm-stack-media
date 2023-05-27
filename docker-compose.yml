@@ -59,6 +59,38 @@ services:
           - node.labels.type == vm
           - node.labels.media == true
 
+  # NAS-Tools
+  nastool:
+    image: shmilyin/nas-tools:2.9.1
+    networks: [network_cluster]
+    restart: on-failure  
+    environment:
+      # 直接使用Portainer容器内的环境变量
+      PUID: ${NASTOOL_PUID}
+      PGID: ${NASTOOL_PGID}
+      UMASK: ${NASTOOL_UMASK}
+      NASTOOL_AUTO_UPDATE: ${NASTOOL_AUTO_UPDATE}
+      NASTOOL_CN_UPDATE: ${NASTOOL_CN_UPDATE}
+      TZ: ${TZ}
+    volumes:
+      - /${MEDIA_DEVICE}:/media
+      - nfs_nastool_config:/config
+    ports:
+      - 3000:3000
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.nastool.rule=Host(`nastool.${DOMAIN_SWARM}`)"
+        - "traefik.http.routers.nastool.entrypoints=websecure"
+        - "traefik.http.routers.nastool.service=nastool"
+        - "traefik.http.routers.nastool.middlewares=noauth-chain@file"
+        - "traefik.http.services.nastool.loadbalancer.server.port=3000"          
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.type == vm
+          - node.labels.media == true
 
   # Jellyfin
   jellyfin:
