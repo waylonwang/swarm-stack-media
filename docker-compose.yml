@@ -134,6 +134,7 @@ networks:
 x-common-keys-volume: &common-keys-volume
   type: nfs
   o: addr=${NFS_SERVER},rw,nfsvers=4
+  
 x-common-media-volume: &common-media-volume
   type: nfs
   o: addr=${MEDIA_SERVER},rw,nfsvers=4
