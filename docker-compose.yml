@@ -64,6 +64,8 @@ services:
     image: shmilyin/nas-tools:2.9.1
     networks: [network_cluster]
     restart: on-failure  
+    extra_hosts:
+      - "api.themoviedb.org:65.9.17.17"    
     environment:
       # 直接使用Portainer容器内的环境变量
       PUID: ${NASTOOL_PUID}
@@ -75,6 +77,7 @@ services:
     volumes:
       - nfs_nastool_media:/media
       - nfs_nastool_config:/config
+      - nfs_nastool_src:/nas-tools
     ports:
       - 3000:3000
     deploy:
@@ -98,10 +101,10 @@ services:
     devices:
       - "/dev/dri/renderD128:/dev/dri/renderD128"
     extra_hosts:
-      - "api.themoviedb.org:13.225.170.110"
+      - "api.themoviedb.org:65.9.17.17"
       - "api.thetvdb.com:13.35.45.141"
-      - "image.tmdb.org:99.84.238.101"
-      - "www.themoviedb.org:99.84.203.104"
+      - "image.tmdb.org:143.244.50.83"
+      - "www.themoviedb.org:99.84.238.161"
     networks: [network_cluster]
     restart: on-failure    
     ports:
@@ -180,3 +183,8 @@ volumes:
     driver_opts:
       <<: *common-keys-volume
       device: :${NFS_DEVICE}/media/nastool/config
+  nfs_nastool_src:
+    driver: local
+    driver_opts:
+      <<: *common-keys-volume
+      device: :${NFS_DEVICE}/media/nastool/src      
