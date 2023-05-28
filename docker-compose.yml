@@ -73,7 +73,7 @@ services:
       NASTOOL_CN_UPDATE: ${NASTOOL_CN_UPDATE}
       TZ: ${TZ}
     volumes:
-      - /${MEDIA_DEVICE}:/media
+      - nfs_nastool_media:/media
       - nfs_nastool_config:/config
     ports:
       - 3000:3000
@@ -170,6 +170,11 @@ volumes:
     driver_opts:
       <<: *common-media-volume
       device: :${MEDIA_DEVICE}/links
+  nfs_nastool_media:
+    driver: local
+    driver_opts:
+      <<: *common-media-volume
+      device: :${MEDIA_DEVICE}          
   nfs_nastool_config:
     driver: local
     driver_opts:
