@@ -68,9 +68,9 @@ services:
       - "api.themoviedb.org:65.9.17.17"    
     environment:
       # 直接使用Portainer容器内的环境变量
-      PUID: ${NASTOOL_PUID}
-      PGID: ${NASTOOL_PGID}
-      UMASK: ${NASTOOL_UMASK}
+      PUID: ${MEDIA_PUID}
+      PGID: ${MEDIA_PGID}
+      UMASK: ${MEDIA_UMASK}
       NASTOOL_AUTO_UPDATE: ${NASTOOL_AUTO_UPDATE}
       NASTOOL_CN_UPDATE: ${NASTOOL_CN_UPDATE}
       TZ: ${TZ}
@@ -101,17 +101,17 @@ services:
     networks: [network_cluster]
     restart: on-failure   
     environment:
-      PERMS: "true"    
       # 直接使用Portainer容器内的环境变量
-      PUID: ${NASTOOL_PUID}
-      PGID: ${NASTOOL_PGID}
-      UMASK: ${NASTOOL_UMASK}
+      PUID: ${MEDIA_PUID}
+      PGID: ${MEDIA_PGID}
+      UMASK: ${MEDIA_UMASK}
+      PERMS: ${MEDIA_PERMS}  
       TZ: ${TZ}
     volumes:
       - nfs_chinesesubfinder_media:/media
       - nfs_chinesesubfinder_config:/config
-    ports:
-      - 19037:19037
+    # ports:
+    #   - 19037:19037
     # logging:
     #   driver: "json-file"
     #   options:
@@ -130,6 +130,35 @@ services:
         constraints:
           - node.labels.type == vm
           - node.labels.media == true          
+
+  # Jackett
+  jackett:
+    image: lscr.io/linuxserver/jackett:latest
+    networks: [network_cluster]
+    restart: on-failure   
+    environment:
+      # 直接使用Portainer容器内的环境变量
+      PUID: ${MEDIA_PUID}
+      PGID: ${MEDIA_PGID}
+      UMASK: ${MEDIA_UMASK}
+      TZ: ${TZ}
+    volumes:
+      - nfs_jackett_media:/media
+      - nfs_jackett_config:/config  
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.jackett.rule=Host(`jackett.${DOMAIN_SWARM}`)"
+        - "traefik.http.routers.jackett.entrypoints=websecure"
+        - "traefik.http.routers.jackett.service=jackett"
+        - "traefik.http.routers.jackett.middlewares=noauth-chain@file"
+        - "traefik.http.services.jackett.loadbalancer.server.port=9117"          
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.type == vm
+          - node.labels.media == true  
 
   # Jellyfin
   jellyfin:
@@ -234,3 +263,13 @@ volumes:
     driver_opts:
       <<: *common-keys-volume
       device: :${NFS_DEVICE}/media/chinesesubfinder/config      
+  nfs_jackett_media:
+    driver: local
+    driver_opts:
+      <<: *common-media-volume
+      device: :${MEDIA_DEVICE}          
+  nfs_jackett_config:
+    driver: local
+    driver_opts:
+      <<: *common-keys-volume
+      device: :${NFS_DEVICE}/media/jackett/config          
