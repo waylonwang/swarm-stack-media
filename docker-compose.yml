@@ -97,7 +97,7 @@ services:
 
   # ChineseSubFinder
   chinesesubfinder:
-    image: allanpk716/ChineseSubFinder:latest
+    image: allanpk716/chinesesubfinder:latest
     networks: [network_cluster]
     restart: on-failure   
     environment:
