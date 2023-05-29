@@ -112,10 +112,10 @@ services:
       - nfs_chinesesubfinder_config:/config
     ports:
       - 19037:19037
-    logging:
-      driver: "json-file"
-      options:
-        ax-size: "100m" # 限制docker控制台日志大小，可自行调整      
+    # logging:
+    #   driver: "json-file"
+    #   options:
+    #     ax-size: "100m" # 限制docker控制台日志大小，可自行调整      
     deploy:
       labels:
         - "traefik.enable=true"
