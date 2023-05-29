@@ -95,6 +95,42 @@ services:
           - node.labels.type == vm
           - node.labels.media == true
 
+  # ChineseSubFinder
+  chinesesubfinder:
+    image: allanpk716/ChineseSubFinder:latest
+    networks: [network_cluster]
+    restart: on-failure   
+    environment:
+      PERMS: "true"    
+      # 直接使用Portainer容器内的环境变量
+      PUID: ${NASTOOL_PUID}
+      PGID: ${NASTOOL_PGID}
+      UMASK: ${NASTOOL_UMASK}
+      TZ: ${TZ}
+    volumes:
+      - nfs_chinesesubfinder_media:/media
+      - nfs_chinesesubfinder_config:/config
+    ports:
+      - 19037:19037
+    logging:
+      driver: "json-file"
+      options:
+        ax-size: "100m" # 限制docker控制台日志大小，可自行调整      
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.chinesesubfinder.rule=Host(`chinesesubfinder.${DOMAIN_SWARM}`)"
+        - "traefik.http.routers.chinesesubfinder.entrypoints=websecure"
+        - "traefik.http.routers.chinesesubfinder.service=chinesesubfinder"
+        - "traefik.http.routers.chinesesubfinder.middlewares=noauth-chain@file"
+        - "traefik.http.services.chinesesubfinder.loadbalancer.server.port=19035"          
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.type == vm
+          - node.labels.media == true          
+
   # Jellyfin
   jellyfin:
     image: jellyfin/jellyfin
@@ -188,3 +224,13 @@ volumes:
     driver_opts:
       <<: *common-keys-volume
       device: :${NFS_DEVICE}/media/nastool/src      
+  nfs_chinesesubfinder_media:
+    driver: local
+    driver_opts:
+      <<: *common-media-volume
+      device: :${MEDIA_DEVICE}          
+  nfs_chinesesubfinder_config:
+    driver: local
+    driver_opts:
+      <<: *common-keys-volume
+      device: :${NFS_DEVICE}/media/chinesesubfinder/config      
