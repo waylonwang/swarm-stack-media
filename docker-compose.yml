@@ -143,7 +143,7 @@ services:
       UMASK: ${MEDIA_UMASK}
       TZ: ${TZ}
     volumes:
-      - nfs_jackett_media:/media
+      - nfs_jackett_downnloads:/downnloads
       - nfs_jackett_config:/config  
     deploy:
       labels:
@@ -263,11 +263,11 @@ volumes:
     driver_opts:
       <<: *common-keys-volume
       device: :${NFS_DEVICE}/media/chinesesubfinder/config      
-  nfs_jackett_media:
+  nfs_jackett_downnloads:
     driver: local
     driver_opts:
-      <<: *common-media-volume
-      device: :${MEDIA_DEVICE}          
+      <<: *common-keys-volume
+      device: :${NFS_DEVICE}/media/jackett/downloads          
   nfs_jackett_config:
     driver: local
     driver_opts:
