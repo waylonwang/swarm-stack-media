@@ -151,7 +151,7 @@ services:
         - "traefik.http.routers.jackett.rule=Host(`jackett.${DOMAIN_SWARM}`)"
         - "traefik.http.routers.jackett.entrypoints=websecure"
         - "traefik.http.routers.jackett.service=jackett"
-        - "traefik.http.routers.jackett.middlewares=noauth-chain@file"
+        - "traefik.http.routers.jackett.middlewares=auth-chain@file"
         - "traefik.http.services.jackett.loadbalancer.server.port=9117"          
       mode: replicated
       replicas: 1
