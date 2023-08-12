@@ -170,7 +170,7 @@ services:
         - homepage.description=PT下载源
         - homepage.showStats=true      
         - homepage.widget.type=jackett
-        - homepage.widget.url=https://jackett.${DOMAIN_SWARM}:4/              
+        - homepage.widget.url=https://jackett.${DOMAIN_SWARM}:4            
       mode: replicated
       replicas: 1
       placement:
@@ -213,7 +213,7 @@ services:
         - homepage.description=影音播放服务
         - homepage.showStats=true      
         - homepage.widget.type=jellyfin
-        - homepage.widget.url=https://jellyfin.${DOMAIN_SWARM}:4/
+        - homepage.widget.url=https://jellyfin.${DOMAIN_SWARM}:4
         - homepage.widget.key=ef401406d1eb478ba62cd9d8a1b7545b
         - homepage.widgetenableBlocks=true
         - homepage.widgetenableNowPlaying=true      
