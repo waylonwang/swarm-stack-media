@@ -167,7 +167,7 @@ services:
         - homepage.ping=http://jackett:9117        
         - homepage.widget.type=jackett
         - homepage.widget.url=https://jackett.${DOMAIN_SWARM}:4    
-        - homepage.widget.key=6lp023q3f2o08krdj6j1hyxeub2ji034        
+        - homepage.widget.key=${HOMEPAGE_JECKTEE_TOKEN}        
       mode: replicated
       replicas: 1
       placement:
@@ -211,7 +211,7 @@ services:
         - homepage.ping=http://jellyfin:8096        
         - homepage.widget.type=jellyfin
         - homepage.widget.url=https://jellyfin.${DOMAIN_SWARM}:4
-        - homepage.widget.key=ef401406d1eb478ba62cd9d8a1b7545b
+        - homepage.widget.key=${HOMEPAGE_JELLYFIN_TOKEN}
         - homepage.widgetenableBlocks=true
         - homepage.widgetenableNowPlaying=true      
       mode: replicated
