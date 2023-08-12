@@ -90,9 +90,9 @@ services:
         - "traefik.http.services.nastool.loadbalancer.server.port=3000"      
         - homepage.group=Media
         - homepage.name=NASTool
-        - homepage.icon=emby.png
+        - homepage.icon=nastool.png
         - homepage.href=https://nastool.${DOMAIN_SWARM}:4/
-        - homepage.description=Media server            
+        - homepage.description=自动化管理多媒体资源            
       mode: replicated
       replicas: 1
       placement:
