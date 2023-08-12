@@ -93,6 +93,7 @@ services:
         - homepage.icon=nastool.png
         - homepage.href=https://nastool.${DOMAIN_SWARM}:4/
         - homepage.description=自动化管理多媒体资源       
+        - homepage.ping=http://nastool:3000        
       mode: replicated
       replicas: 1
       placement:
@@ -163,6 +164,7 @@ services:
         - homepage.icon=jackett.png
         - homepage.href=https://jackett.${DOMAIN_SWARM}:4/
         - homepage.description=PT下载源    
+        - homepage.ping=http://jackett:9117        
         - homepage.widget.type=jackett
         - homepage.widget.url=https://jackett.${DOMAIN_SWARM}:4    
         - homepage.widget.key=6lp023q3f2o08krdj6j1hyxeub2ji034        
@@ -206,6 +208,7 @@ services:
         - homepage.icon=jellyfin.png
         - homepage.href=https://jellyfin.${DOMAIN_SWARM}:4/
         - homepage.description=影音播放服务
+        - homepage.ping=http://jellyfin:8096        
         - homepage.widget.type=jellyfin
         - homepage.widget.url=https://jellyfin.${DOMAIN_SWARM}:4
         - homepage.widget.key=ef401406d1eb478ba62cd9d8a1b7545b
