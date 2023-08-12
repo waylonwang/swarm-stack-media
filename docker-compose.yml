@@ -90,7 +90,7 @@ services:
         - "traefik.http.services.nastool.loadbalancer.server.port=3000"      
         - homepage.group=Media
         - homepage.name=NASTool
-        - homepage.icon=nastool.png
+        - homepage.icon=https://www.waylon.wang:4/images/services/nastool.png
         - homepage.href=https://nastool.${DOMAIN_SWARM}:4/
         - homepage.description=自动化管理多媒体资源       
         - homepage.ping=http://nastool:3000        
