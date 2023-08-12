@@ -93,11 +93,7 @@ services:
         - homepage.icon=nastool.png
         - homepage.href=https://nastool.${DOMAIN_SWARM}:4/
         - homepage.description=自动化管理多媒体资源
-        - homepage.showStats=true      
-        - homepage.widget.type=emby
-        - homepage.widget.url=http://emby.home
-        - homepage.widget.key=yourembyapikeyhere
-        - homepage.widget.fields=["field1","field2"]               
+        - homepage.showStats=true                   
       mode: replicated
       replicas: 1
       placement:
