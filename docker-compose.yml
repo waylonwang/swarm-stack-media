@@ -166,7 +166,8 @@ services:
         - homepage.description=PT下载源
         - homepage.showStats=true      
         - homepage.widget.type=jackett
-        - homepage.widget.url=https://jackett.${DOMAIN_SWARM}:4            
+        - homepage.widget.url=https://jackett.${DOMAIN_SWARM}:4    
+        - homepage.widget.key=6lp023q3f2o08krdj6j1hyxeub2ji034        
       mode: replicated
       replicas: 1
       placement:
