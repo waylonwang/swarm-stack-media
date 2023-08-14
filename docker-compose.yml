@@ -164,9 +164,11 @@ services:
         - homepage.icon=jackett.png
         - homepage.href=https://jackett.${DOMAIN_SWARM}:4/
         - homepage.description=PT下载源    
-        - homepage.ping=http://jackett:9117        
-        - homepage.widget.type=jackett
-        - homepage.widget.url=https://jackett.${DOMAIN_SWARM}:4
+        - homepage.ping=http://jackett:9117       
+        # jackett widget必须无密码验证才有左右，配置无意义 
+        # - homepage.widget.type=jackett
+        # - homepage.widget.url=https://jackett.${DOMAIN_SWARM}:4    
+        # - homepage.widget.key=${HOMEPAGE_JECKTEE_TOKEN}        
       mode: replicated
       replicas: 1
       placement:
