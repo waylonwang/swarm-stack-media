@@ -28,8 +28,8 @@ services:
         - "traefik.http.services.drpy2.loadbalancer.server.port=5705"
         - homepage.group=Media
         - homepage.name=Drpy
-        - homepage.icon=https://www.waylon.wang:4/images/services/drpy.png
-        - homepage.href=https://drpy.${DOMAIN_SWARM}:4/
+        - homepage.icon=python.png
+        - homepage.href=https://drpy.${DOMAIN_SWARM}:4/admin/
         - homepage.description=影音源管理       
         - homepage.ping=http://drpy:5705        
         - homepage.weight=10          
@@ -61,7 +61,7 @@ services:
         - "traefik.http.services.myalist.loadbalancer.server.port=5244"
         - homepage.group=Media
         - homepage.name=Alist
-        - homepage.icon=alist.png
+        - homepage.icon=https://www.waylon.wang:4/images/services/alist.png
         - homepage.href=https://myalist.${DOMAIN_SWARM}:4/
         - homepage.description=多媒体列表       
         - homepage.ping=http://myalist:5244        
