@@ -166,8 +166,7 @@ services:
         - homepage.description=PT下载源    
         - homepage.ping=http://jackett:9117        
         - homepage.widget.type=jackett
-        - homepage.widget.url=https://jackett.${DOMAIN_SWARM}:4    
-        - homepage.widget.key=${HOMEPAGE_JECKTEE_TOKEN}        
+        - homepage.widget.url=https://jackett.${DOMAIN_SWARM}:4
       mode: replicated
       replicas: 1
       placement:
