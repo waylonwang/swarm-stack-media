@@ -218,7 +218,8 @@ services:
       - nfs_jellyfin_config:/config
       - nfs_jellyfin_cache:/cache
       - nfs_jellyfin_font:/usr/share/fonts/truetype/dejavu
-      - nfs_jellyfin_lib:/medialib
+      - nfs_jellyfin_lib1:/medialib
+      - nfs_jellyfin_lib2:/media_ext_lib
       - ${VIDEO_MAIN_DIR}:/media
       - ${VIDEO_OTHER_DIR}:/other
     deploy:
@@ -255,7 +256,7 @@ x-common-keys-volume: &common-keys-volume
   type: nfs
   o: addr=${NFS_SERVER},rw,nfsvers=4
 
-x-common-media-volume: &common-media-volume
+x-common-media-main-volume: &common-media-main-volume
   type: nfs
   o: addr=${MEDIA_SERVER},rw,nfsvers=4
 
@@ -289,15 +290,20 @@ volumes:
     driver_opts:
       <<: *common-keys-volume
       device: :${NFS_DEVICE}/media/jellyfin/font
-  nfs_jellyfin_lib:
+  nfs_jellyfin_lib1:
     driver: local
     driver_opts:
-      <<: *common-media-volume
+      <<: *common-media-main-volume
+      device: :${MEDIA_DEVICE}/links
+  nfs_jellyfin_lib2:
+    driver: local
+    driver_opts:
+      <<: *common-media-ext-volume
       device: :${MEDIA_DEVICE}/links
   nfs_nastool_media:
     driver: local
     driver_opts:
-      <<: *common-media-volume
+      <<: *common-media-main-volume
       device: :${MEDIA_DEVICE}   
   nfs_nastool_media_ext:
     driver: local
@@ -317,7 +323,7 @@ volumes:
   nfs_chinesesubfinder_media:
     driver: local
     driver_opts:
-      <<: *common-media-volume
+      <<: *common-media-main-volume
       device: :${MEDIA_DEVICE}          
   nfs_chinesesubfinder_config:
     driver: local
