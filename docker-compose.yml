@@ -90,6 +90,7 @@ services:
       TZ: ${TZ}
     volumes:
       - nfs_nastool_media:/media
+      - nfs_nastool_media_ext:/media_ext
       - nfs_nastool_config:/config
       - nfs_nastool_src:/nas-tools
     ports:
@@ -258,6 +259,10 @@ x-common-media-volume: &common-media-volume
   type: nfs
   o: addr=${MEDIA_SERVER},rw,nfsvers=4
 
+x-common-media-ext-volume: &common-media-ext-volume
+  type: nfs
+  o: addr=${MEDIA_EXT_SERVER},rw,nfsvers=4
+
 volumes:
   nfs_drpy:
     driver: local
@@ -293,7 +298,12 @@ volumes:
     driver: local
     driver_opts:
       <<: *common-media-volume
-      device: :${MEDIA_DEVICE}          
+      device: :${MEDIA_DEVICE}   
+  nfs_nastool_media_ext:
+    driver: local
+    driver_opts:
+      <<: *common-media-ext-volume
+      device: :${MEDIA_DEVICE}                
   nfs_nastool_config:
     driver: local
     driver_opts:
