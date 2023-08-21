@@ -218,9 +218,9 @@ services:
       - nfs_jellyfin_config:/config
       - nfs_jellyfin_cache:/cache
       - nfs_jellyfin_font:/usr/share/fonts/truetype/dejavu
-      - nfs_jellyfin_lib1:/medialib
+      - nfs_jellyfin_lib1:/media_main_lib
       - nfs_jellyfin_lib2:/media_ext_lib
-      - ${VIDEO_MAIN_DIR}:/media
+      #- ${VIDEO_MAIN_DIR}:/media
       - ${VIDEO_OTHER_DIR}:/other
     deploy:
       labels:
