@@ -117,6 +117,50 @@ services:
           - node.labels.type == vm
           - node.labels.media == true
 
+  # NAS-Tools hsuyelin的open版本
+  open-nastool:
+    image: hsuyelin/nas-tools:latest
+    networks: [network_cluster]
+    restart: on-failure  
+    extra_hosts:
+      - "api.themoviedb.org:65.9.17.17"    
+    environment:
+      # 直接使用Portainer容器内的环境变量
+      PUID: ${MEDIA_PUID}
+      PGID: ${MEDIA_PGID}
+      UMASK: ${MEDIA_UMASK}
+      NASTOOL_AUTO_UPDATE: ${NASTOOL_AUTO_UPDATE}
+      NASTOOL_CN_UPDATE: ${NASTOOL_CN_UPDATE}
+      TZ: ${TZ}
+    volumes:
+      - nfs_open_nastool_media:/media
+      - nfs_open_nastool_media_ext:/media_ext
+      - nfs_open_nastool_config:/config
+      - nfs_open_nastool_src:/nas-tools
+    ports:
+      - 3000:3000
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.open-nastool.rule=Host(`opennastool.${DOMAIN_SWARM}`)"
+        - "traefik.http.routers.open-nastool.entrypoints=websecure"
+        - "traefik.http.routers.open-nastool.service=open-nastool"
+        - "traefik.http.routers.open-nastool.middlewares=noauth-chain@file"
+        - "traefik.http.services.open-nastool.loadbalancer.server.port=3000"      
+        - homepage.group=Media
+        - homepage.name=OpenNASTool
+        - homepage.icon=https://www.waylon.wang:4/images/services/nastool.png
+        - homepage.href=https://opennastool.${DOMAIN_SWARM}:4/
+        - homepage.description=自动化管理多媒体资源       
+        - homepage.ping=http://open-nastool:3000        
+        - homepage.weight=5   
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.type == vm
+          - node.labels.media == true          
+
   # ChineseSubFinder
   chinesesubfinder:
     image: allanpk716/chinesesubfinder:latest
@@ -320,6 +364,26 @@ volumes:
     driver_opts:
       <<: *common-keys-volume
       device: :${NFS_DEVICE}/media/nastool/src      
+  nfs_open_nastool_media:
+    driver: local
+    driver_opts:
+      <<: *common-media-main-volume
+      device: :${MEDIA_DEVICE}   
+  nfs_open_nastool_media_ext:
+    driver: local
+    driver_opts:
+      <<: *common-media-ext-volume
+      device: :${MEDIA_DEVICE}                
+  nfs_open_nastool_config:
+    driver: local
+    driver_opts:
+      <<: *common-keys-volume
+      device: :${NFS_DEVICE}/media/open-nastool/config
+  nfs_open_nastool_src:
+    driver: local
+    driver_opts:
+      <<: *common-keys-volume
+      device: :${NFS_DEVICE}/media/open-nastool/src  
   nfs_chinesesubfinder_media:
     driver: local
     driver_opts:
