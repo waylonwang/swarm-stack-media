@@ -137,8 +137,6 @@ services:
       - nfs_open_nastool_media_ext:/media_ext
       - nfs_open_nastool_config:/config
       - nfs_open_nastool_src:/nas-tools
-    ports:
-      - 3000:3000
     deploy:
       labels:
         - "traefik.enable=true"
