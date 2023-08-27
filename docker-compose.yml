@@ -133,8 +133,8 @@ services:
       NASTOOL_CN_UPDATE: ${NASTOOL_CN_UPDATE}
       TZ: ${TZ}
     volumes:
-      - nfs_open_nastool_media:/media
-      - nfs_open_nastool_media_ext:/media_ext
+      # - nfs_open_nastool_media:/media
+      # - nfs_open_nastool_media_ext:/media_ext
       - nfs_open_nastool_config:/config
       - nfs_open_nastool_src:/nas-tools
     deploy:
