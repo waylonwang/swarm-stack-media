@@ -39,7 +39,7 @@ services:
       placement:
         constraints:
           - node.labels.type == vm
-          - node.labels.media == true
+          - node.labels.application == true
 
   # MyAlist
   myalist:
