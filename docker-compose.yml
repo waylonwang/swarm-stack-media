@@ -32,7 +32,7 @@ services:
         - homepage.icon=python.png
         - homepage.href=https://drpy.${DOMAIN_SWARM}:4/admin/
         - homepage.description=影音源管理       
-        - homepage.ping=http://drpy:5705        
+        - homepage.siteMonitor=http://drpy:5705        
         - homepage.weight=10          
       mode: replicated
       replicas: 1
@@ -65,7 +65,7 @@ services:
         - homepage.icon=https://www.waylon.wang:4/images/services/alist.png
         - homepage.href=https://myalist.${DOMAIN_SWARM}:4/
         - homepage.description=多媒体列表       
-        - homepage.ping=http://myalist:5244        
+        - homepage.siteMonitor=http://myalist:5244        
         - homepage.weight=20         
       mode: replicated
       replicas: 1
@@ -151,7 +151,7 @@ services:
         - homepage.icon=https://www.waylon.wang:4/images/services/nastool.png
         - homepage.href=https://nastool.${DOMAIN_SWARM}:4/
         - homepage.description=自动化管理多媒体资源       
-        - homepage.ping=http://nastool:3000        
+        - homepage.siteMonitor=http://nastool:3000        
         - homepage.weight=5   
       mode: replicated
       replicas: 1
@@ -194,7 +194,7 @@ services:
         - homepage.icon=https://www.waylon.wang:4/images/services/chinesesubfinder.png
         - homepage.href=https://chinesesubfinder.${DOMAIN_SWARM}:4/
         - homepage.description=中文字幕检索   
-        - homepage.ping=http://chinesesubfinder:19035   
+        - homepage.siteMonitor=http://chinesesubfinder:19035   
         - homepage.weight=40                
       mode: replicated
       replicas: 1
@@ -230,7 +230,7 @@ services:
         - homepage.icon=jackett.png
         - homepage.href=https://jackett.${DOMAIN_SWARM}:4/
         - homepage.description=种子检索    
-        - homepage.ping=http://jackett:9117   
+        - homepage.siteMonitor=http://jackett:9117   
         - homepage.weight=20   
         # jackett widget必须无密码验证才有左右，配置无意义 
         # - homepage.widget.type=jackett
@@ -277,7 +277,7 @@ services:
         - homepage.icon=jellyfin.png
         - homepage.href=https://jellyfin.${DOMAIN_SWARM}:4/
         - homepage.description=影音播放服务
-        - homepage.ping=http://jellyfin:8096     
+        - homepage.siteMonitor=http://jellyfin:8096     
         - homepage.weight=8   
         - homepage.widget.type=jellyfin
         - homepage.widget.url=https://jellyfin.${DOMAIN_SWARM}:4
