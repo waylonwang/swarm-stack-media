@@ -194,7 +194,7 @@ services:
         - homepage.icon=https://www.waylon.wang:4/images/services/chinesesubfinder.png
         - homepage.href=https://chinesesubfinder.${DOMAIN_SWARM}:4/
         - homepage.description=中文字幕检索   
-        - homepage.siteMonitor=http://chinesesubfinder:19035   
+        - homepage.ping=chinesesubfinder  
         - homepage.weight=40                
       mode: replicated
       replicas: 1
@@ -230,7 +230,7 @@ services:
         - homepage.icon=jackett.png
         - homepage.href=https://jackett.${DOMAIN_SWARM}:4/
         - homepage.description=种子检索    
-        - homepage.siteMonitor=http://jackett:9117   
+        - homepage.ping=jackett
         - homepage.weight=20   
         # jackett widget必须无密码验证才有左右，配置无意义 
         # - homepage.widget.type=jackett
