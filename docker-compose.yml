@@ -7,6 +7,9 @@ services:
     image: esme518/docker-drpy
     networks: [network_cluster]
     restart: on-failure
+    ports:
+      - 5705:5705
+      - 9001:9001
     environment:
       user: root
       # INET_USERNAME: ${DRPY_USERNAME}
