@@ -38,11 +38,13 @@ services:
         - homepage.siteMonitor=http://drpy:5705        
         - homepage.weight=10          
       mode: replicated
-      replicas: 1
+      replicas: 2
       placement:
         constraints:
-          - node.labels.type == vm
-          - node.labels.media == true
+          # - node.labels.type == vm
+          # - node.labels.media == true
+          - node.labels.type == nas
+          # - node.labels.nas == primary          
 
   # Drpy(自动更新)
   drpy2:
@@ -73,11 +75,13 @@ services:
         - homepage.siteMonitor=http://drpy2:5705        
         - homepage.weight=10          
       mode: replicated
-      replicas: 1
+      replicas: 2
       placement:
         constraints:
-          - node.labels.type == vm
-          - node.labels.media == true                
+          # - node.labels.type == vm
+          # - node.labels.media == true
+          - node.labels.type == nas
+          # - node.labels.nas == primary                          
 
   # TVBox
   tvbox:
