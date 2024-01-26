@@ -42,8 +42,8 @@ services:
       placement:
         constraints:
           # - node.labels.type == vm
-          # - node.labels.media == true
           - node.labels.type == nas
+          - node.labels.media == true
           # - node.labels.nas == primary          
 
   # Drpy(自动更新)
@@ -79,8 +79,8 @@ services:
       placement:
         constraints:
           # - node.labels.type == vm
-          # - node.labels.media == true
           - node.labels.type == nas
+          - node.labels.media == true
           # - node.labels.nas == primary                          
 
   # TVBox
@@ -369,6 +369,7 @@ services:
       placement:
         constraints:
           - node.labels.type == nas
+          - node.labels.media == true
           - node.labels.nas == primary
 
 networks:
