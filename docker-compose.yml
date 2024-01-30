@@ -51,9 +51,9 @@ services:
     image: esme518/docker-drpy
     networks: [network_cluster]
     restart: on-failure
-    # ports:
-    #   - 5705:5705
-    #   - 9001:9001
+    ports:
+      - 5705:5705
+      - 9001:9001
     deploy:
       labels:
         - "traefik.enable=true"
