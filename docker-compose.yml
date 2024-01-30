@@ -51,6 +51,11 @@ services:
     image: esme518/docker-drpy
     networks: [network_cluster]
     restart: on-failure
+    environment:
+      user: root
+      # INET_USERNAME: ${DRPY_USERNAME}
+      # INET_PASSWORD: ${DRPY_PASSWORD}
+      TZ: ${TZ}     
     volumes:
       - nfs_drpy2:/root/sd/pywork/dr_py
     deploy:
