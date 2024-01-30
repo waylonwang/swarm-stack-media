@@ -51,9 +51,8 @@ services:
     image: esme518/docker-drpy
     networks: [network_cluster]
     restart: on-failure
-    ports:
-      - 5705:5705
-      - 9001:9001
+    volumes:
+      - nfs_drpy2:/root/sd/pywork/dr_py
     deploy:
       labels:
         - "traefik.enable=true"
@@ -78,52 +77,10 @@ services:
       replicas: 2
       placement:
         constraints:
-          - node.labels.type == vm
+          # - node.labels.type == vm
           # - node.labels.type == nas
           - node.labels.media == true
           # - node.labels.nas == primary                          
-  drpy3:
-    image: esme518/docker-drpy
-    networks: [network_cluster]
-    restart: on-failure
-    # ports:
-    #   - 5705:5705
-    #   - 9001:9001
-    environment:
-      user: root
-      # INET_USERNAME: ${DRPY_USERNAME}
-      # INET_PASSWORD: ${DRPY_PASSWORD}
-      TZ: ${TZ}       
-      http_proxy: ${CLASH_HTTP_PROXY}
-      https_proxy: ${CLASH_HTTP_PROXY}      
-    deploy:
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.drpy3.rule=Host(`drpy3.${DOMAIN_SWARM}`)"
-        - "traefik.http.routers.drpy3.entrypoints=websecure"
-        - "traefik.http.routers.drpy3.service=drpy3"
-        - "traefik.http.routers.drpy3.middlewares=noauth-chain@file"
-        - "traefik.http.services.drpy3.loadbalancer.server.port=5705"
-        - "traefik.http.routers.drpys3.rule=Host(`drpys3.${DOMAIN_SWARM}`)"
-        - "traefik.http.routers.drpys3.entrypoints=websecure"
-        - "traefik.http.routers.drpys3.service=drpys3"
-        - "traefik.http.routers.drpys3.middlewares=noauth-chain@file"
-        - "traefik.http.services.drpys3.loadbalancer.server.port=9001"
-        - homepage.group=Media
-        - homepage.name=Drpy3
-        - homepage.icon=kamatera.png
-        - homepage.href=https://drpy3.${DOMAIN_SWARM}:4/admin/
-        - homepage.description=影音源管理       
-        - homepage.siteMonitor=http://drpy3:5705        
-        - homepage.weight=10          
-      mode: replicated
-      replicas: 2
-      placement:
-        constraints:
-          - node.labels.type == vm
-          # - node.labels.type == nas
-          - node.labels.media == true
-          # - node.labels.nas == primary  
 
   # TVBox
   tvbox:
@@ -436,6 +393,11 @@ volumes:
     driver_opts:
       <<: *common-keys-volume
       device: :${NFS_DEVICE}/media/drpy/src
+  nfs_drpy2:
+    driver: local
+    driver_opts:
+      <<: *common-keys-volume
+      device: :${NFS_DEVICE}/media/drpy2/src
   nfs_mylist:
     driver: local
     driver_opts:
