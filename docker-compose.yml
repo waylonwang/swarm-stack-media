@@ -94,8 +94,8 @@ services:
       # INET_USERNAME: ${DRPY_USERNAME}
       # INET_PASSWORD: ${DRPY_PASSWORD}
       TZ: ${TZ}       
-      HTTP_PROXY: ${CLASH_HTTP_PROXY}
-      HTTPS_PROXY: ${CLASH_HTTP_PROXY}      
+      http_proxy: ${CLASH_HTTP_PROXY}
+      https_proxy: ${CLASH_HTTP_PROXY}      
     deploy:
       labels:
         - "traefik.enable=true"
