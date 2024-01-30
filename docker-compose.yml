@@ -74,7 +74,7 @@ services:
         - homepage.siteMonitor=http://drpy2:5705        
         - homepage.weight=10          
       mode: replicated
-      replicas: 2
+      replicas: 1
       placement:
         constraints:
           # - node.labels.type == vm
