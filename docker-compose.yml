@@ -78,8 +78,8 @@ services:
       replicas: 2
       placement:
         constraints:
-          # - node.labels.type == vm
-          - node.labels.type == nas
+          - node.labels.type == vm
+          # - node.labels.type == nas
           - node.labels.media == true
           # - node.labels.nas == primary                          
 
