@@ -84,7 +84,7 @@ services:
         constraints:
           - node.labels.type == vm
           # - node.labels.type == nas
-          - node.labels.media == true
+          - node.labels.application == true
           # - node.labels.nas == primary                          
 
   # TVBox
