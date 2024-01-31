@@ -1,4 +1,4 @@
-# Update Time: 2024-01-31 08:00
+# Update Time: 2024-01-31 08:05
 version: "3.4"
 
 services:
@@ -82,8 +82,8 @@ services:
       replicas: 1
       placement:
         constraints:
-          # - node.labels.type == vm
-          - node.labels.type == nas
+          - node.labels.type == vm
+          # - node.labels.type == nas
           - node.labels.media == true
           # - node.labels.nas == primary                          
 
