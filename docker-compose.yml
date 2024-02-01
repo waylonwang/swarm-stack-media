@@ -48,7 +48,7 @@ services:
 
   # Drpy(自动更新)
   drpy2:
-    image: esme518/docker-drpy
+    image: esme518/docker-drpy:amd64-latest
     networks: [network_cluster]
     restart: on-failure
     # environment:
