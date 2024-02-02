@@ -366,8 +366,8 @@ services:
         - homepage.widget.type=jellyfin
         - homepage.widget.url=https://jellyfin.${DOMAIN_SWARM}:4
         - homepage.widget.key=${HOMEPAGE_JELLYFIN_TOKEN}
-        - homepage.widgetenableBlocks=true
-        - homepage.widgetenableNowPlaying=true      
+        - homepage.widget.enableBlocks=true
+        - homepage.widget.enableNowPlaying=true      
       mode: replicated
       replicas: 1
       placement:
