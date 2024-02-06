@@ -51,13 +51,13 @@ services:
     image: esme518/docker-drpy:amd64-latest
     networks: [network_cluster]
     restart: on-failure
-    # environment:
-    #   user: root
+    environment:
+      user: root
     #   # INET_USERNAME: ${DRPY_USERNAME}
     #   # INET_PASSWORD: ${DRPY_PASSWORD}
-    #   TZ: ${TZ}     
-    # volumes:
-    #   - nfs_drpy2:/root/sd/pywork/dr_py
+      TZ: ${TZ}     
+    volumes:
+      - nfs_drpy2:/root/sd/pywork/dr_py
     deploy:
       labels:
         - "traefik.enable=true"
