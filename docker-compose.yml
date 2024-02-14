@@ -14,6 +14,10 @@ services:
       user: root
       # INET_USERNAME: ${DRPY_USERNAME}
       # INET_PASSWORD: ${DRPY_PASSWORD}
+      http_proxy: ${OPENCLASH_HTTP_PROXY}
+      https_proxy: ${OPENCLASH_HTTP_PROXY}
+      HTTP_PROXY: ${OPENCLASH_HTTP_PROXY}
+      HTTPS_PROXY: ${OPENCLASH_HTTP_PROXY}      
       TZ: ${TZ}       
     volumes:
       - nfs_drpy:/root/sd/pywork/dr_py
