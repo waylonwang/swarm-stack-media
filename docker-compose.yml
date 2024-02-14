@@ -56,8 +56,8 @@ services:
     #   # INET_USERNAME: ${DRPY_USERNAME}
     #   # INET_PASSWORD: ${DRPY_PASSWORD}
       TZ: ${TZ}     
-    volumes:
-      - nfs_drpy2:/root/sd/pywork/dr_py
+    # volumes:
+    #   - nfs_drpy2:/root/sd/pywork/dr_py
     deploy:
       labels:
         - "traefik.enable=true"
